@@ -171,6 +171,6 @@ Fetch the relevant module when working in that domain.
 | `content-policy.md` | Never auto-save to VCMS; agents ARE the voice                            | VCMS tags, storage rules, editorial, style    |
 | `team-workflow.md`  | All changes through PRs; never push to main                              | Full workflow, QA grades, escalation triggers |
 | `fleet-ops.md`      | Bootstrap phases IN ORDER: Tailscale > CLI > bootstrap > optimize > mesh | SSH, machines, Tailscale, macOS               |
-| `pr-workflow.md`    | Push branch, `gh pr create`, assign QA grade - never skip the PR             | Branch naming, commit format, PR template     |
+| `pr-workflow.md`    | Push branch, `gh pr create`, assign QA grade - never skip the PR         | Branch naming, commit format, PR template     |
 
 Fetch with: `crane_doc('global', '<module>')`
