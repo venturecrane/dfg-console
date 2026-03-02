@@ -1,0 +1,27 @@
+[allowlist]
+paths = [
+  # Build artifacts and dependencies
+  "node_modules",
+  "package-lock.json",
+
+  # Documentation with example tokens (decommissioned relay worker)
+  "docs/handoffs/README.md",
+  "docs/handoffs/QA.md",
+  "docs/pm/PM_TEAM_BRIEFING.md",
+  "docs/DEPLOYMENT.md",
+  ".claude/commands/question.md",
+  ".claude/commands/handoff.md",
+  ".claude/commands/merge.md",
+  "scripts/sod-universal.sh",
+
+  # Decommissioned dfg-relay worker (all references now stale)
+  "workers/dfg-relay/",
+
+  # Temporary HTML snapshots with ephemeral test JWTs
+  "workers/dfg-scout/new.html",
+  "workers/dfg-scout/old.html",
+  "workers/dfg-scout/tmp_snapshot.html",
+  "workers/dfg-scout/new 2.html",
+  "workers/dfg-scout/old 2.html",
+  "workers/dfg-scout/tmp_snapshot 2.html",
+]
