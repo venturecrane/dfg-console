@@ -10,6 +10,7 @@
     "tail:production": "wrangler tail --env production",
     "db:migrate": "wrangler d1 execute dfg-scout-db --remote --file=migrations/001-opportunities.sql",
     "db:migrate:local": "wrangler d1 execute dfg-scout-db --local --file=migrations/001-opportunities.sql",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
