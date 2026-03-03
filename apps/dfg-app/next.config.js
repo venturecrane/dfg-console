@@ -8,6 +8,8 @@ const withSerwist = withSerwistInit({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Empty turbopack config to silence webpack/turbopack warning in Next.js 16
+  turbopack: {},
   images: {
     remotePatterns: [
       {
