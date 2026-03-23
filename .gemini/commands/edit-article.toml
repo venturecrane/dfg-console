@@ -1,4 +1,6 @@
-# /edit-article - Editorial Review Agent
+description = "Editorial Review Agent"
+
+prompt = """
 
 This command runs an article through two parallel editor agents, applies blocking fixes directly, and reports what changed. Advisory issues are reported but not auto-fixed.
 
@@ -283,3 +285,4 @@ After applying fixes, present:
 - **Parallelism**: Both agents launch in a single message for true parallel execution.
 - **No rounds**: Single pass. Re-invoke after fixes to verify.
 - **Terminology doc is the source of truth**: The Style & Compliance Editor checks against it. If the terminology doc is wrong, fix it there - not in the article.
+"""

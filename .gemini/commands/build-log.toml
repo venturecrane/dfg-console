@@ -1,4 +1,6 @@
-# /build-log - Draft a Build Log Entry
+description = "Draft a Build Log Entry"
+
+prompt = """
 
 Draft a short operational update (200-1,000 words) about what shipped, broke, or changed. The founder provides a topic and the agent drafts around it.
 
@@ -152,3 +154,4 @@ Same as topic mode step 3.
 - **Weekly mode is fragile.** It depends on `/eod` handoffs existing. Sparse handoffs plus raw commit messages produce mediocre drafts. The quality gate prevents publishing low-quality filler.
 - **All logs save as `draft: true`.** Publishing requires `/edit-log` review and Captain approval.
 - **Stealth ventures are never exposed.** The registry's `showInPortfolio` field is the source of truth.
+"""

@@ -1,4 +1,6 @@
-# /go-live - Venture Go-Live Process
+description = "Venture Go-Live Process"
+
+prompt = """
 
 Launch a venture to production with mandatory secret rotation and readiness checks.
 
@@ -108,3 +110,4 @@ Report: "{Venture Name} is live. ventures.json updated, portfolio synced, handof
 - **Transcript cleanup is optional hygiene.** Rotation already invalidated any exposed values. Old transcripts in ~/.claude/ contain dead credentials after rotation.
 - **If smoke tests fail after rotating an immediate-revocation secret** (like OAuth client secrets), the old value is already dead. Fix the issue with the new credential - don't try to rollback.
 - **Shared credentials require coordination.** If GOOGLE_CLIENT_SECRET is rotated for /dc, the old value dies immediately for /ke too. Push to all consuming ventures before revoking.
+"""

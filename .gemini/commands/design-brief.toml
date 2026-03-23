@@ -1,9 +1,6 @@
----
-name: design-brief
-description: Multi-Agent Design Brief Generator
----
+description = "Multi-Agent Design Brief Generator"
 
-# /design-brief - Multi-Agent Design Brief Generator
+prompt = """
 
 This command orchestrates a 4-agent design brief process with configurable rounds. It reads the PRD and existing design artifacts, runs structured design rounds with parallel agents, and synthesizes the output into a production-ready design brief.
 
@@ -573,3 +570,4 @@ OUTPUT FORMAT:
 - **Parallelism**: Each round launches all 4 agents in a single message for true parallel execution
 - **Context size**: Round 2+ agents receive large prompts (all previous round outputs). This is expected and necessary for cross-pollination.
 - **Default is 1 round**: Fast and sufficient for most use cases. Use more rounds when the design system is mature and heading into implementation.
+"""
