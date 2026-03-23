@@ -1,4 +1,6 @@
-# /edit-log - Build Log Editorial Review
+description = "Build Log Editorial Review"
+
+prompt = """
 
 Single-agent editorial review for build logs. Checks genericization and style, auto-fixes blocking issues, reports advisory issues for human judgment.
 
@@ -194,3 +196,4 @@ After applying fixes, present:
 - **Agent type**: Uses `subagent_type: general-purpose`, `model: "sonnet"` via the Task tool.
 - **Terminology doc is the source of truth**: If the terminology doc is wrong, fix it there, not in the log.
 - **No fact-checking**: Unlike `/edit-article`, there's no fact checker agent. Build logs are short operational updates, not claims-heavy articles.
+"""

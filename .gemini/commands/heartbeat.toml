@@ -1,9 +1,6 @@
----
-name: heartbeat
-description: Keep Session Alive
----
+description = "Keep Session Alive"
 
-# /heartbeat - Keep Session Alive
+prompt = """
 
 Send a heartbeat to prevent your session from timing out.
 
@@ -143,3 +140,4 @@ echo "Your session will stay active for 45 minutes from this heartbeat."
 - Sessions become "abandoned" after 45 minutes without heartbeat (next `/sod` creates new session)
 - Requires active session and CRANE_CONTEXT_KEY
 - Safe to call frequently (idempotent)
+"""

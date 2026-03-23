@@ -1,9 +1,6 @@
----
-name: code-review
-description: Codebase Review
----
+description = "Codebase Review"
 
-# /code-review - Codebase Review
+prompt = """
 
 Deep codebase review with multi-model perspectives. Produces a graded scorecard stored in VCMS and a full report committed to the repo.
 
@@ -466,3 +463,4 @@ Graceful degradation: every external call (VCMS, GitHub CLI, future Codex/Gemini
 - **VCMS tag:** `code-review` (venture-scoped). **Report:** `docs/reviews/code-review-{YYYY-MM-DD}.md`.
 - **Issue labels:** `source:code-review`, `type:tech-debt`, `severity:{level}`.
 - Distributed to venture repos via `sync-commands.sh`. `/enterprise-review` stays in crane-console only.
+"""

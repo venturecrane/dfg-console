@@ -1,4 +1,6 @@
-# /update - Update Session Context
+description = "Update Session Context"
+
+prompt = """
 
 Update your session with current branch, commit, and work metadata.
 
@@ -195,3 +197,4 @@ echo "Your session context is now visible to other agents."
 - Refreshes heartbeat (prevents timeout)
 - Safe to call frequently
 - The `meta` field is freeform JSON - use it for whatever context helps your workflow
+"""

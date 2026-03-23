@@ -1,4 +1,6 @@
-# /prd-review - Multi-Agent PRD Review
+description = "Multi-Agent PRD Review"
+
+prompt = """
 
 This command orchestrates a 6-agent PRD review process with configurable rounds. It reads existing source documents, runs structured critique rounds with parallel agents, and synthesizes the output into a production-ready PRD.
 
@@ -613,3 +615,4 @@ OUTPUT FORMAT:
 - **Between-round validation**: The orchestrator uses Glob to verify expected contribution files exist after each round. It does not read contribution contents - only checks file count.
 - **Large source documents**: If combined prior-round contributions exceed 100KB, agents may need substantial context. Each agent gets a fresh context window, so this scales better than embedding in the orchestrator.
 - **Default is 1 round**: Fast and sufficient for most use cases. Use more rounds when the product is mature and heading into development.
+"""
