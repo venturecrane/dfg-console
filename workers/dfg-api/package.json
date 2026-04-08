@@ -11,11 +11,12 @@
     "db:migrate": "wrangler d1 execute dfg-scout-db --remote --file=migrations/001-opportunities.sql",
     "db:migrate:local": "wrangler d1 execute dfg-scout-db --local --file=migrations/001-opportunities.sql",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --project unit --project harness",
     "test:watch": "vitest"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241218.0",
+    "@venturecrane/crane-test-harness": "https://github.com/venturecrane/crane-console/releases/download/crane-test-harness-v0.1.0/venturecrane-crane-test-harness-0.1.0.tgz",
     "typescript": "^5.7.2",
     "vitest": "^4.0.18",
     "wrangler": "^4.69.0"
