@@ -19,11 +19,7 @@
 import { describe, it, expect } from 'vitest';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-	createTestD1,
-	runMigrations,
-	discoverNumericMigrations,
-} from '@venturecrane/crane-test-harness';
+import { createTestD1, runMigrations, discoverNumericMigrations } from '@venturecrane/crane-test-harness';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const migrationsDir = join(__dirname, '..', '..', 'migrations');
@@ -51,9 +47,7 @@ describe('dfg-scout migrations via harness', () => {
 		expect(schemaOnly).toHaveLength(1);
 		await runMigrations(db, { files: schemaOnly });
 
-		const result = await db
-			.prepare("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name")
-			.all<{ name: string }>();
+		const result = await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name").all<{ name: string }>();
 		const tables = result.results.map((r) => r.name);
 
 		// Tables the dfg-scout worker source reads from or writes to.
