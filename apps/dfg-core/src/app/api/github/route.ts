@@ -123,9 +123,6 @@ function normalizeGitHubIssue(issue: GitHubIssue): WorkQueueCard {
 
   const needsLabels = labels.filter((l) => l.name.startsWith('needs:')).map((l) => l.name)
 
-  const qaGradeLabel = labels.find((l) => l.name.startsWith('qa-grade:'))
-  const qaGrade = qaGradeLabel ? qaGradeLabel.name.replace('qa-grade:', '') : undefined
-
   const previewUrl = extractPreviewUrl(body)
   const hasAgentBrief = extractAgentBrief(body) !== null
 
@@ -140,7 +137,6 @@ function normalizeGitHubIssue(issue: GitHubIssue): WorkQueueCard {
     previewUrl,
     statusLabels,
     needsLabels,
-    qaGrade,
     hasAgentBrief,
   }
 }
