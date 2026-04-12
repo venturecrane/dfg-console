@@ -29,7 +29,6 @@ export interface WorkQueueCard {
   // Phase 1 - Derived fields
   statusLabels: string[]
   needsLabels: string[]
-  qaGrade?: string
   hasAgentBrief: boolean
 
   // Phase 2 - Orchestrator metadata (placeholders)

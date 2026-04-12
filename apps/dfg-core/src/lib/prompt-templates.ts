@@ -108,12 +108,6 @@ ${
 - **FAIL** - Critical issues found, needs fixes
 - **PASS_UNVERIFIED** - Passes logic review but preview URL unavailable
 
-## Grade
-
-\`\`\`
-qa-grade: [pass|fail|pass-unverified]
-\`\`\`
-
 ## Notes
 
 [Add your detailed testing notes here, including:
@@ -236,7 +230,6 @@ ${brief}
 // ============================================================================
 
 export function MERGE_PROMPT(ctx: PromptContext): string {
-  const qaGrade = ctx.labels.find((l) => l.name.startsWith('qa-grade:'))?.name
   const status = getStatusLabel(ctx.labels)
 
   return `# Merge Checklist: PR #${ctx.number}
@@ -245,13 +238,11 @@ export function MERGE_PROMPT(ctx: PromptContext): string {
 - **Title:** ${ctx.title}
 - **URL:** ${ctx.url}
 - **Status:** ${status || 'Unknown'}
-- **QA Grade:** ${qaGrade || 'Not graded'}
 - **Preview:** ${ctx.previewUrl || 'Not available'}
 
 ## Pre-Merge Verification
 
 - [ ] All CI checks passing (GitHub Actions)
-- [ ] QA approval received (label:qa-grade:pass or pass-unverified)
 - [ ] No merge conflicts with base branch
 - [ ] Preview URL tested and working (if applicable)
 - [ ] Documentation updated (if needed)
