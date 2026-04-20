@@ -4,3 +4,9 @@ workers/dfg-scout/*.html
 **/public/sw.js
 **/public/sw.js.map
 **/public/swe-worker-*.js
+
+# Local/agent/tool artifacts that may sit in the working tree but are
+# not part of the source. .gitignore excludes them from commits; this
+# stops format:check from tripping on them locally too.
+**/.vercel/
+**/.claude/settings.local.json

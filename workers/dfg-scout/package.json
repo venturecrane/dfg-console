@@ -15,7 +15,7 @@
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20251209.0",
-		"@venturecrane/crane-test-harness": "https://github.com/venturecrane/crane-console/releases/download/crane-test-harness-v0.1.0/venturecrane-crane-test-harness-0.1.0.tgz",
+		"@venturecrane/crane-test-harness": "^0.1.0",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.16",
 		"wrangler": "^4.69.0"
