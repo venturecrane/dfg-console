@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
+import { ClerkProvider } from '@clerk/nextjs'
 import { Providers } from '@/components/Providers'
 import './globals.css'
 
@@ -36,14 +37,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="overflow-x-hidden">
-      <body className={`${inter.className} overflow-x-hidden w-full max-w-[100vw]`}>
-        <Providers>
-          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full max-w-[100vw] overflow-x-hidden">
-            {children}
-          </div>
-        </Providers>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className="overflow-x-hidden">
+        <body className={`${inter.className} overflow-x-hidden w-full max-w-[100vw]`}>
+          <Providers>
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full max-w-[100vw] overflow-x-hidden">
+              {children}
+            </div>
+          </Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }

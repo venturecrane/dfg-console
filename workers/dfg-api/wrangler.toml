@@ -34,6 +34,10 @@ crons = ["*/5 * * * *"]  # Check watch triggers every 5 minutes
 [env.production.vars]
 ENVIRONMENT = "production"
 # MAKE_WEBHOOK_URL is set via wrangler secret
+# RESEND_API_KEY is set via wrangler secret (waitlist confirmations + Captain notify)
+# TURNSTILE_SECRET_KEY is set via wrangler secret (waitlist anti-abuse)
+# WAITLIST_FROM_EMAIL optional, default "Durgan Field Guide <hello@mail.durganfieldguide.com>"
+# WAITLIST_NOTIFY_EMAIL optional, default smdurgan@venturecrane.com
 
 [[env.production.d1_databases]]
 binding = "DB"
