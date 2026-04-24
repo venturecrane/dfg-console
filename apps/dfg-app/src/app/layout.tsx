@@ -35,18 +35,24 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
+const CLERK_CONFIGURED = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <ClerkProvider>
-      <html lang="en" className="overflow-x-hidden">
-        <body className={`${inter.className} overflow-x-hidden w-full max-w-[100vw]`}>
-          <Providers>
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full max-w-[100vw] overflow-x-hidden">
-              {children}
-            </div>
-          </Providers>
-        </body>
-      </html>
-    </ClerkProvider>
+  const body = (
+    <html lang="en" className="overflow-x-hidden">
+      <body className={`${inter.className} overflow-x-hidden w-full max-w-[100vw]`}>
+        <Providers>
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full max-w-[100vw] overflow-x-hidden">
+            {children}
+          </div>
+        </Providers>
+      </body>
+    </html>
   )
+
+  // ClerkProvider throws on init when publishableKey is missing. Skip it
+  // (and the gated console behind it) until Captain provisions Clerk per
+  // docs/runbooks/waitlist-launch.md. The public marketing landing at /
+  // renders either way.
+  return CLERK_CONFIGURED ? <ClerkProvider>{body}</ClerkProvider> : body
 }
