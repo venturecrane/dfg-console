@@ -17,6 +17,7 @@ import { handleDismissAlert, handleAlerts } from './routes/alerts'
 import { handleSources } from './routes/sources'
 import { handleIngestRoute } from './routes/ingest'
 import { handleEvents } from './routes/events'
+import { handleWaitlist } from './routes/waitlist'
 import { loadCategoryConfig, loadAllCategoryConfigs } from './lib/category-loader'
 
 // =============================================================================
@@ -46,6 +47,11 @@ const handler: ExportedHandler<Env> = {
     // Health check (public)
     if (path === '/health' && method === 'GET') {
       return json({ status: 'ok', service: 'dfg-api', env: env.ENVIRONMENT })
+    }
+
+    // Waitlist signup (public, anti-abuse via Cloudflare Turnstile)
+    if (path === '/waitlist' && method === 'POST') {
+      return handleWaitlist(request, env)
     }
 
     // All other endpoints require auth

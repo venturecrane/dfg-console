@@ -29,4 +29,10 @@ export interface Env {
 
   // Staleness configuration (optional, defaults defined in utils/staleness.ts)
   STALE_THRESHOLD_DAYS?: string
+
+  // Waitlist (public POST /waitlist endpoint)
+  RESEND_API_KEY?: string // Resend transactional email
+  TURNSTILE_SECRET_KEY?: string // Cloudflare Turnstile server-side verification
+  WAITLIST_FROM_EMAIL?: string // Sender, default: "Durgan Field Guide <hello@mail.durganfieldguide.com>"
+  WAITLIST_NOTIFY_EMAIL?: string // Where to notify on signup, default: smdurgan@venturecrane.com
 }
