@@ -1,8 +1,8 @@
-# Waitlist + Parallel Auth Launch Runbook (Phase 3a)
+# Waitlist + Clerk Migration Launch Runbook
 
-Manual setup steps to bring the new landing + waitlist + parallel-auth (Clerk alongside legacy NextAuth) live on `durganfieldguide.com`. Code is in PR; this is the operator checklist.
+Manual setup steps to bring the new landing + waitlist + Clerk auth live on `durganfieldguide.com`. Code is in PR; this is the operator checklist.
 
-**Phase 3a is a parallel-auth window.** Both `/login` (NextAuth) and `/sign-in` (Clerk) work simultaneously. Captain keeps operational access via either path. After ≥5 days of stable Clerk operation, Phase 3b removes NextAuth, `/login`, the `ALLOWED_USERS` env var, and the `next-auth` dependency.
+NextAuth is removed in this PR. The only sign-in path is `/sign-in` (Clerk allowlist + magic link). If Clerk magic links fail to deliver during launch, rollback the deploy in Vercel (single click) and the previous NextAuth-based version is back instantly.
 
 ## 1. Vercel custom domain
 
@@ -84,21 +84,21 @@ wrangler d1 migrations apply dfg-scout-db --remote --env production
    ```
    Submit a test signup. Confirm structured `waitlist_signup` log line.
 
-### Parallel auth (the safety-critical part)
+### Clerk auth verification
 
 7. Sign out everywhere first.
-8. **Path A — legacy NextAuth still works:** Visit `/login`, enter Captain credentials → reach `/dashboard`. Verify operator console renders with data.
+8. Visit `/sign-in`, enter `smdurgan@venturecrane.com` → magic-link email arrives → click-through completes sign-in → reach `/dashboard`. Verify operator console renders with data.
 9. Sign out.
-10. **Path B — new Clerk path works:** Visit `/sign-in`, enter `smdurgan@venturecrane.com` → magic-link email arrives → click-through completes sign-in → reach `/dashboard`. Verify operator console renders with data.
-11. **Path C — non-allowlisted email blocked:** Try to sign in with a different email → blocked at Clerk.
-12. **Path D — unauth visitor protected:** Sign out, visit `/dashboard` directly → redirect to `/sign-in` (new Clerk path, not legacy `/login`).
+10. Try `/sign-in` with a non-allowlisted email → blocked at Clerk.
+11. Sign out, visit `/dashboard` directly → redirect to `/sign-in`.
 
-### 5-day soak before Phase 3b
+### Rollback path if magic-link delivery is broken
 
-- Use Clerk path (`/sign-in`) for at least 5 days as Captain's primary auth.
-- Confirm magic-link delivery works on every device you use (desktop browsers, iOS, Android).
-- Confirm no operational regression on opportunities, sources, settings.
-- After 5 clean days, ship Phase 3b PR (NextAuth removal).
+If Clerk magic links don't arrive in your inbox after the deploy:
+
+- Vercel project `dfg-console` → Deployments → previous deploy → "Promote to Production" (single click).
+- The pre-PR version (NextAuth credentials) is instantly back. Total downtime: under a minute.
+- Investigate Clerk + Resend deliverability before re-deploying.
 
 ## 9. Reviewing waitlist signups
 
@@ -115,14 +115,11 @@ wrangler d1 execute dfg-scout-db --remote --env production --command \
   "UPDATE waitlist_signups SET status = 'invited' WHERE email = 'foo@example.com'"
 ```
 
-## 10. Phase 3b (separate PR, ≥5 days later)
+## 10. Env vars to remove from Vercel + Infisical
 
-When Captain confirms Clerk-only operation is stable:
+After the deploy is verified, these env vars are no longer used and can be deleted from Vercel project settings + Infisical `/dfg`:
 
-- Delete `apps/dfg-app/src/app/api/auth/[...nextauth]/route.ts`
-- Delete `apps/dfg-app/src/app/login/page.tsx`
-- Remove `ALLOWED_USERS` env var (Vercel + Infisical)
-- Remove `NEXTAUTH_SECRET` env var
-- Update `apps/dfg-app/src/middleware.ts` — drop the NextAuth fallback branch
-- Drop `next-auth` from `apps/dfg-app/package.json`
-- Final verification: Captain signs out everywhere, signs in only via Clerk, no broken paths.
+- `ALLOWED_USERS` (was the NextAuth credentials list)
+- `NEXTAUTH_SECRET` (was the NextAuth JWT signing key)
+
+Code references to both are already gone in this PR.

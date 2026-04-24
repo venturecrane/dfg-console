@@ -10,12 +10,13 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
+import { auth } from '@clerk/nextjs/server'
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  // Check if user is authenticated
-  const session = await getServerSession()
-  if (!session) {
+  // Check if user is authenticated (Clerk allowlist enforces who CAN sign in;
+  // here we just gate the proxy on any valid Clerk session)
+  const { userId } = await auth()
+  if (!userId) {
     return NextResponse.json(
       { error: { code: 'UNAUTHORIZED', message: 'Authentication required' } },
       { status: 401 }

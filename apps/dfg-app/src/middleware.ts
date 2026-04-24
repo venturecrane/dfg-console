@@ -1,48 +1,27 @@
 /**
- * Parallel auth middleware (Phase 3a of NextAuth → Clerk migration).
+ * Clerk middleware for the DFG operator console.
  *
- * Two auth providers are accepted during the transition:
- *   1. Clerk (new path: /sign-in)
- *   2. NextAuth legacy session JWT cookie (existing path: /login)
+ * Public routes:
+ *   - / (marketing landing)
+ *   - /sign-in (Clerk SignIn)
+ *   - /api/waitlist (public POST)
  *
- * Either valid session lets the request through. Captain keeps operational
- * access via /login while migrating to Clerk via /sign-in. After ≥5 days of
- * stable Clerk operation, Phase 3b removes NextAuth, /login, and the
- * ALLOWED_USERS env var.
+ * Everything else is protected via Clerk allowlist (Restricted Mode +
+ * magic link configured in the Clerk dashboard). Unauth visitors are
+ * redirected to /sign-in.
  */
 
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-import { getToken } from 'next-auth/jwt'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
-const isPublicRoute = createRouteMatcher([
-  '/',
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-  '/login(.*)',
-  '/api/auth(.*)',
-  '/api/waitlist',
-])
+const isPublicRoute = createRouteMatcher(['/', '/sign-in(.*)', '/sign-up(.*)', '/api/waitlist'])
 
-export default clerkMiddleware(async (auth, req: NextRequest) => {
+export default clerkMiddleware(async (auth, req) => {
   if (isPublicRoute(req)) return
 
-  // Clerk session check
-  const clerkAuth = await auth()
-  if (clerkAuth.userId) return
+  const { userId } = await auth()
+  if (userId) return
 
-  // Fall back to legacy NextAuth JWT cookie (Captain transition window)
-  try {
-    const token = await getToken({
-      req: req as unknown as Parameters<typeof getToken>[0]['req'],
-      secret: process.env.NEXTAUTH_SECRET,
-    })
-    if (token) return
-  } catch {
-    // Treat NextAuth lookup failure as no session
-  }
-
-  // No valid session via either provider — send to new Clerk sign-in
   return NextResponse.redirect(new URL('/sign-in', req.url))
 })
 
