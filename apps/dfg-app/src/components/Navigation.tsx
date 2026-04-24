@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { LayoutDashboard, Search, Settings, Menu, X, ArrowLeft, Database } from 'lucide-react'
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Opportunities', href: '/opportunities', icon: Search },
   { name: 'Sources', href: '/sources', icon: Database },
   { name: 'Settings', href: '/settings', icon: Settings },
@@ -96,7 +96,7 @@ export function Navigation({ showBack, backUrl, title }: NavigationProps) {
               {title}
             </h1>
           ) : (
-            <Link href="/" className="flex items-center">
+            <Link href="/dashboard" className="flex items-center">
               <Image
                 src="/logo.svg"
                 alt="DFG"
@@ -175,7 +175,7 @@ export function Navigation({ showBack, backUrl, title }: NavigationProps) {
       <nav className="hidden md:flex md:flex-col md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 md:border-r md:border-gray-200 dark:md:border-gray-700 md:bg-white dark:md:bg-gray-800">
         {/* Logo */}
         <div className="flex items-center h-16 px-6 border-b border-gray-200 dark:border-gray-700">
-          <Link href="/" className="flex items-center">
+          <Link href="/dashboard" className="flex items-center">
             <Image src="/logo.svg" alt="DFG" width={60} height={48} className="h-10 w-auto" />
           </Link>
         </div>
