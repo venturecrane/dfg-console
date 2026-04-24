@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 export function Footer() {
   const year = new Date().getFullYear()
   return (
@@ -20,12 +18,6 @@ export function Footer() {
           >
             Join the list
           </a>
-          <Link
-            href="/sign-in"
-            className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-          >
-            Sign in
-          </Link>
         </nav>
       </div>
     </footer>
