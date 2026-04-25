@@ -17,6 +17,7 @@ on:
 # authenticated curl calls below.
 permissions:
   contents: read
+  packages: read
 
 jobs:
   npm-audit:
