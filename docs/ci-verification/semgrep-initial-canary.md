@@ -67,10 +67,16 @@ Additional pre-existing vulnerabilities surfaced and fixed in this PR: `npm audi
 
 ## Ruleset application to live repo
 
-**Applied:** <!-- TO BE FILLED AFTER MERGE -->
-**Ruleset ID:** <!-- TO BE FILLED -->
+**Applied:** 2026-04-25 via `gh api --method POST /repos/venturecrane/dfg-console/rulesets --input config/github-ruleset-main-protection.json`
+**Ruleset ID:** 15555212
 **Enforcement:** active
 **Required status checks:** `Security Summary` (the aggregate gate; all 5 sub-jobs must pass)
+
+## Course correction — PR #298
+
+The matrix expansion of `npm-audit` and `typescript` jobs was reverted in PR #298. The per-worker `npm ci` at root walks into all three workers' deps and requires `packages: read` + `NODE_AUTH_TOKEN` to pull `@venturecrane/crane-test-harness` from GitHub Packages. While that worked for dfg-console (with the fixes applied), the pattern is fragile across the fleet — other venture repos may not have the same package access. The canonical fleet pattern uses a single flat audit job at root, not a per-worker matrix.
+
+PR #298 restores the original `audit` job (flat, root-level), removes the `typescript` matrix job (it was not in the pre-PR workflow), and updates `summary.needs` to `[audit, gitleaks, semgrep, nosemgrep-audit]`.
 
 ## Takeaways
 
@@ -78,5 +84,4 @@ Additional pre-existing vulnerabilities surfaced and fixed in this PR: `npm audi
 - Summary job correctly aggregates sub-job failures.
 - `nosemgrep-audit` accepts justified annotations, rejects bare/short.
 - Container pin `returntocorp/semgrep:1.157.0` produces reproducible runs.
-- Pre-existing auth gap discovered: new matrix jobs needed `NODE_AUTH_TOKEN` + `packages: read` for GitHub Package Registry access (`@venturecrane/crane-test-harness` is org-private).
-- Per-worker audit matrix surfaced 7 high vulnerabilities that root-level audit missed — fixed in the same PR.
+- Per-worker matrix is fragile for org-package repos — fleet standard is flat root audit.
