@@ -61,7 +61,9 @@ The root `npm ci` was failing with E401 Unauthorized against `npm.pkg.github.com
 
 After deleting `scripts/semgrep-canary.ts` and fixing the NODE_AUTH_TOKEN issue, CI should go green. Run link appended below after confirmation.
 
-**Run (canary-removed):** <!-- TO BE FILLED AFTER GREEN RUN -->
+**Run (canary-removed):** https://github.com/venturecrane/dfg-console/actions/runs/24942274585 — all 10 security checks pass (NPM Audit x3, Secret Detection, TypeScript x3, Semgrep, nosemgrep Audit); Security Summary aggregates green.
+
+Additional pre-existing vulnerabilities surfaced and fixed in this PR: `npm audit fix` resolved high-severity findings in all three workers (picomatch ReDoS, undici WebSocket/smuggling, vite path-traversal, wrangler via miniflare). These were never caught before because the original security.yml ran only a root-level audit.
 
 ## Ruleset application to live repo
 
@@ -76,4 +78,5 @@ After deleting `scripts/semgrep-canary.ts` and fixing the NODE_AUTH_TOKEN issue,
 - Summary job correctly aggregates sub-job failures.
 - `nosemgrep-audit` accepts justified annotations, rejects bare/short.
 - Container pin `returntocorp/semgrep:1.157.0` produces reproducible runs.
-- Pre-existing auth gap discovered: new matrix jobs needed `NODE_AUTH_TOKEN` for GitHub Package Registry access.
+- Pre-existing auth gap discovered: new matrix jobs needed `NODE_AUTH_TOKEN` + `packages: read` for GitHub Package Registry access (`@venturecrane/crane-test-harness` is org-private).
+- Per-worker audit matrix surfaced 7 high vulnerabilities that root-level audit missed — fixed in the same PR.
