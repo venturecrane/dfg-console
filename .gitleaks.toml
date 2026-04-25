@@ -1,27 +1,57 @@
-[allowlist]
-paths = [
-  # Build artifacts and dependencies
-  "node_modules",
-  "package-lock.json",
+# Gitleaks configuration — dfg-console
+#
+# Plan §C.4 / §C.5: paired with the gitleaks step in
+# .github/workflows/security.yml. Inherits the upstream default ruleset
+# and adds project-specific exclusions for known-safe patterns.
+#
+# Reference: https://github.com/gitleaks/gitleaks#configuration
 
-  # Documentation with example tokens (decommissioned relay worker)
-  "docs/handoffs/README.md",
-  "docs/handoffs/QA.md",
-  "docs/pm/PM_TEAM_BRIEFING.md",
-  "docs/DEPLOYMENT.md",
-  ".claude/commands/question.md",
-  ".claude/commands/handoff.md",
-  ".claude/commands/merge.md",
-  "scripts/sod-universal.sh",
+# Inherit the default ruleset bundled with gitleaks (~80 detectors).
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Global allowlist for dfg-console monorepo"
+
+# Allowlist paths that legitimately contain credential-shaped strings:
+#   - lockfiles (npm hashes look like secrets)
+#   - dependency caches
+#   - test fixtures with intentionally fake secrets
+#   - documentation examples
+paths = [
+  '''.*node_modules/.*''',
+  '''package-lock\.json''',
+  '''.*\.lock''',
+  '''.*\.min\.js''',
+  '''test/fixtures/.*''',
+  '''__fixtures__/.*''',
+  '''workers/[^/]+/test/fixtures/.*''',
+  '''docs/.*\.md''',
+
+  # Documentation with example tokens
+  '''docs/handoffs/README\.md''',
+  '''docs/handoffs/QA\.md''',
+  '''docs/pm/PM_TEAM_BRIEFING\.md''',
+  '''docs/DEPLOYMENT\.md''',
+  '''\.claude/commands/.*''',
+  '''scripts/sod-universal\.sh''',
 
   # Decommissioned dfg-relay worker (all references now stale)
-  "workers/dfg-relay/",
+  '''workers/dfg-relay/.*''',
 
   # Temporary HTML snapshots with ephemeral test JWTs
-  "workers/dfg-scout/new.html",
-  "workers/dfg-scout/old.html",
-  "workers/dfg-scout/tmp_snapshot.html",
-  "workers/dfg-scout/new 2.html",
-  "workers/dfg-scout/old 2.html",
-  "workers/dfg-scout/tmp_snapshot 2.html",
+  '''workers/dfg-scout/.*\.html''',
+]
+
+# Allowlist commits that have already been audited. Empty by default —
+# add via PR with explicit captain approval.
+commits = []
+
+# Regexes that match known-safe placeholder values used in docs and tests.
+regexes = [
+  '''(?i)example[._-]?(api[._-]?key|secret|token)''',
+  '''(?i)your[._-]?(api[._-]?key|secret|token)[._-]?here''',
+  '''(?i)changeme''',
+  '''(?i)test[._-]?(api[._-]?key|secret|token|relay[._-]?key)''',
+  '''[a-f0-9]{32,64}\.(jpg|png|gif|webp)''',  # asset filenames look like hashes
 ]
