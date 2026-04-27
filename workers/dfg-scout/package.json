@@ -10,9 +10,6 @@
 		"test": "vitest run --project unit --project harness",
 		"test:watch": "vitest"
 	},
-	"dependencies": {
-		"dfg-data-gateway": "file:../../packages/dfg-data-gateway"
-	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20251209.0",
 		"@venturecrane/crane-test-harness": "^0.1.0",
