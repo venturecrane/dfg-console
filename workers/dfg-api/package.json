@@ -8,8 +8,8 @@
     "deploy:production": "wrangler deploy --env production",
     "tail": "wrangler tail",
     "tail:production": "wrangler tail --env production",
-    "db:migrate": "wrangler d1 execute dfg-scout-db --remote --file=migrations/001-opportunities.sql",
-    "db:migrate:local": "wrangler d1 execute dfg-scout-db --local --file=migrations/001-opportunities.sql",
+    "db:migrate": "echo 'Prod migrations require seeding the d1_migrations tracking table first. See docs/runbooks/d1-migrations.md.' && exit 1",
+    "db:migrate:local": "wrangler d1 migrations apply dfg-scout-db-preview --local",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --project unit --project harness",
     "test:watch": "vitest"
