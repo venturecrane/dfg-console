@@ -21,10 +21,6 @@ STEAL_THRESHOLD = "2000"
 ANALYST_URL = "http://localhost:8788"
 R2_PUBLIC_URL = "https://pub-dfg-evidence.r2.dev"
 
-[[kv_namespaces]]
-binding = "SCOUT_KV"
-id = "654357f4ea634d8db682f54bae0170a2"
-
 [[d1_databases]]
 binding = "DFG_DB"
 database_name = "dfg-scout-db-preview"
@@ -51,10 +47,6 @@ MAX_BID_LIMIT = "6000"
 STEAL_THRESHOLD = "2000"
 ANALYST_URL = "https://dfg-analyst.automation-ab6.workers.dev"
 R2_PUBLIC_URL = "https://pub-dfg-evidence.r2.dev"
-
-[[env.production.kv_namespaces]]
-binding = "SCOUT_KV"
-id = "fdd4f609a8d34b32817d6f156396898a"
 
 [[env.production.d1_databases]]
 binding = "DFG_DB"

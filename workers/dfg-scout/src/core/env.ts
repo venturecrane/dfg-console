@@ -6,7 +6,6 @@ export interface Env {
 	// Databases
 	DFG_DB: D1Database;
 	DFG_EVIDENCE: R2Bucket;
-	SCOUT_KV: KVNamespace;
 
 	// Security
 	RESET_TOKEN: string;
