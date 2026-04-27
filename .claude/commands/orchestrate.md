@@ -58,7 +58,6 @@ gh issue view {N} --repo {REPO} --json number,title,body,labels,state
 For each issue, extract from labels:
 
 - **Priority**: `prio:*` label (P0/P1/P2/P3)
-- **QA grade**: `qa-grade:*` label
 - **Component**: `component:*` label
 
 Also extract dependencies from body (same logic as `/sprint`):
@@ -415,27 +414,9 @@ When `--resume <sprint_id>` is provided:
 
 6. Display reconciled state and resume point. Ask Captain for confirmation before continuing.
 
-## Sprint Cache Schema
-
-```json
-{
-  "id": "sprint_abc123",
-  "venture": "dc",
-  "repo": "venturecrane/dc-console",
-  "current_wave": 1,
-  "wave_plan": [[42, 45], [51]],
-  "dispatched": {
-    "42": { "machine": "m16", "task_id": "task_abc" },
-    "45": { "machine": "mbp27", "task_id": "task_def" }
-  },
-  "created_at": "2026-02-20T10:00:00Z",
-  "updated_at": "2026-02-20T10:05:00Z"
-}
-```
-
-This is a **local performance cache**, NOT source of truth. GitHub is authoritative. The cache stores dispatch metadata (machine assignments, task IDs) that GitHub doesn't know about - this is its only purpose. No duplicated PR state or CI status.
-
 ## Notes
+
+Sprint cache schema is shown in DISPATCH Step 4. It is a **local performance cache**, NOT source of truth - GitHub is authoritative.
 
 - **mac23 excluded from worker pool**: The orchestrator host doesn't run workers by default to avoid resource contention.
 - **Fleet health checks before every wave**: Machines can go offline mid-sprint. Re-check before dispatching each wave.

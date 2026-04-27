@@ -20,11 +20,11 @@ Parse `$ARGUMENTS`:
 
 ## Pre-flight
 
-1. **Terminology doc**: Read `~/dev/vc-web/docs/content/terminology.md`. If missing, stop: "Terminology doc not found."
-2. **Venture registry**: Read `~/dev/crane-console/config/ventures.json`. If missing, stop: "Venture registry not found."
+1. **Terminology doc**: Verify `~/dev/vc-web/docs/content/terminology.md` exists. If missing, stop: "Terminology doc not found."
+2. **Venture registry**: Verify `~/dev/crane-console/config/ventures.json` exists. If missing, stop: "Venture registry not found."
 3. **Recent logs**: Read up to 3 most recent files in `~/dev/vc-web/src/content/logs/` for voice consistency.
 
-Store the terminology doc as `TERMINOLOGY_DOC` and the venture registry as `VENTURE_REGISTRY`.
+Read the terminology doc and venture registry on demand when drafting (not pre-loaded into prompt).
 
 Build a list of **stealth ventures** - any venture where `portfolio.showInPortfolio` is `false`. These must not appear in the draft by name, code, or description.
 
@@ -149,6 +149,6 @@ Same as topic mode step 3.
 ## Notes
 
 - **Topic mode is the 80% case.** The founder knows what happened. The bottleneck is drafting, not signal gathering.
-- **Weekly mode is fragile.** It depends on `/eod` handoffs existing. Sparse handoffs plus raw commit messages produce mediocre drafts. The quality gate prevents publishing low-quality filler.
+- **Weekly mode is fragile.** It depends on `/eos` handoffs existing. Sparse handoffs plus raw commit messages produce mediocre drafts. The quality gate prevents publishing low-quality filler.
 - **All logs save as `draft: true`.** Publishing requires `/edit-log` review and Captain approval.
 - **Stealth ventures are never exposed.** The registry's `showInPortfolio` field is the source of truth.
