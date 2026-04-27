@@ -10,7 +10,9 @@ DFG (Durgan Field Guide) is an operator tool for identifying undervalued physica
 
 ```
 dfg/
-├── apps/dfg-app/          # Next.js 16 operator console (React, TypeScript, Tailwind)
+├── apps/
+│   ├── dfg-app/           # Next.js 16 operator console (React, TypeScript, Tailwind)
+│   └── dfg-core/          # Next.js 16 internal command center (port 3001)
 ├── workers/
 │   ├── dfg-api/           # Cloudflare Worker - REST API for opportunities
 │   ├── dfg-scout/         # Cloudflare Worker - auction scraping/pipeline
@@ -18,6 +20,15 @@ dfg/
 ├── packages/dfg-types/    # Shared TypeScript types
 └── docs/                  # Documentation and specs
 ```
+
+**apps/dfg-core**: Internal PM/QA command center. Surfaces a GitHub-issue queue
+dashboard (needs-qa, needs-pm, dev-queue, ready-to-merge, in-flight) sourced
+from `venturecrane/dfg-console`. Protected by Clerk (shares the dfg-app Clerk
+tenant; allowlist is managed in the Clerk dashboard). Runs on port 3001 and
+deploys via Vercel. The GitHub repo and owner are overridable through
+`GITHUB_OWNER` and `GITHUB_REPO` env vars (defaults: `venturecrane`,
+`dfg-console`). Server-side `GITHUB_TOKEN` powers the proxy at
+`/api/github`.
 
 ## Build Commands
 
@@ -65,7 +76,7 @@ npm run typecheck        # TypeScript check
 
 **Tech Stack:**
 
-- Frontend: Next.js 16 (App Router), React 18, TypeScript, Tailwind CSS, NextAuth.js
+- Frontend: Next.js 16 (App Router), React 18, TypeScript, Tailwind CSS, @clerk/nextjs
 - Backend: Cloudflare Workers with Hono router
 - Database: Cloudflare D1 (SQLite)
 - Storage: Cloudflare R2 (photos, snapshots)
