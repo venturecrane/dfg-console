@@ -35,8 +35,8 @@ function setCache(key: string, data: any): void {
 // GITHUB API
 // ============================================================================
 
-const GITHUB_OWNER = 'durganfieldguide'
-const GITHUB_REPO = 'dfg-console'
+const GITHUB_OWNER = process.env.GITHUB_OWNER || 'venturecrane'
+const GITHUB_REPO = process.env.GITHUB_REPO || 'dfg-console'
 
 interface GitHubSearchResponse {
   total_count: number
