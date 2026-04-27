@@ -28,8 +28,10 @@ database_id = "e6af9d25-b031-4958-a3b2-455bafdff5f1"
 [env.production]
 name = "dfg-api"
 
-[env.production.triggers]
-crons = ["*/5 * * * *"]  # Check watch triggers every 5 minutes
+# Cron paused 2026-04-27 — venture in cold storage. See issue #299.
+# Re-enable when active dev resumes by restoring the triggers block:
+# [env.production.triggers]
+# crons = ["*/5 * * * *"]  # Check watch triggers every 5 minutes
 
 [env.production.vars]
 ENVIRONMENT = "production"

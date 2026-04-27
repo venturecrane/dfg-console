@@ -40,8 +40,10 @@ bucket_name = "dfg-evidence"
 [env.production]
 name = "dfg-scout"
 
-[env.production.triggers]
-crons = ["*/15 * * * *"]
+# Cron paused 2026-04-27 — venture in cold storage. See issue #299.
+# Re-enable when active dev resumes by restoring the triggers block:
+# [env.production.triggers]
+# crons = ["*/15 * * * *"]
 
 [env.production.vars]
 ENVIRONMENT = "production"
