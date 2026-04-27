@@ -34,19 +34,15 @@ npx wrangler d1 execute dfg-scout-db-preview --file=migrations/schema.sql --loca
 
 ## Production migrations
 
-**Production is intentionally NOT wired up to the migrations runner.** `npm run db:migrate` is a deliberate no-op that points readers here. Reason: the existing prod D1 (`dfg-scout-db`, 18 tables, ~22 MB) was bootstrapped by hand or via the legacy `wrangler d1 execute --file=...` approach. It does **not** have a `d1_migrations` tracking table, so `wrangler d1 migrations apply --remote` would treat all 8 migrations as unapplied and try to `CREATE TABLE` tables that already exist — failing partway through.
+**Production is intentionally NOT wired up to the migrations runner.** `npm run db:migrate` is a deliberate no-op that points readers here. Reason: the existing prod D1 (`dfg-scout-db`, ~22 MB) was bootstrapped by hand or via the legacy `wrangler d1 execute --file=...` approach. It has a `d1_migrations` tracking table, but only 2 of the 9 migration files are recorded as applied (the rest were applied without going through the runner). Running `wrangler d1 migrations apply --remote` today would treat 7 migrations as unapplied and attempt to re-apply them — `CREATE TABLE IF NOT EXISTS` is safe, but `ALTER TABLE ADD COLUMN` statements would fail with "duplicate column" since the columns already exist.
 
 If you need to enable the runner for prod (one-time prep, gated on Captain approval):
 
-1. Verify with `wrangler d1 execute dfg-scout-db --remote --command="SELECT name FROM sqlite_master WHERE type='table'"` that all 8 migrations' tables already exist.
-2. Seed `d1_migrations` to mark all current migrations as applied:
+1. Verify with `wrangler d1 execute dfg-scout-db --remote --command="SELECT name FROM sqlite_master WHERE type='table'"` that all current-migration tables already exist.
+2. Inspect the existing `d1_migrations` rows: `wrangler d1 execute dfg-scout-db --remote --command="SELECT name FROM d1_migrations ORDER BY id"`. Note which migrations are already recorded.
+3. Backfill `d1_migrations` with rows for the migrations that physically applied but aren't tracked:
    ```sql
-   CREATE TABLE IF NOT EXISTS d1_migrations (
-     id INTEGER PRIMARY KEY AUTOINCREMENT,
-     name TEXT UNIQUE,
-     applied_at DATETIME DEFAULT CURRENT_TIMESTAMP
-   );
-   INSERT INTO d1_migrations (name, applied_at) VALUES
+   INSERT OR IGNORE INTO d1_migrations (name, applied_at) VALUES
      ('0001_opportunities.sql', CURRENT_TIMESTAMP),
      ('0002_drop_alert_dismissals.sql', CURRENT_TIMESTAMP),
      ('0003_analysis_runs.sql', CURRENT_TIMESTAMP),
@@ -54,15 +50,16 @@ If you need to enable the runner for prod (one-time prep, gated on Captain appro
      ('0005_standardize_sierra_source.sql', CURRENT_TIMESTAMP),
      ('0006_mvc_events.sql', CURRENT_TIMESTAMP),
      ('0007_add_ai_analysis_json.sql', CURRENT_TIMESTAMP),
-     ('0008_create_waitlist_signups.sql', CURRENT_TIMESTAMP);
+     ('0008_create_waitlist_signups.sql', CURRENT_TIMESTAMP),
+     ('0009_create_operator_config.sql', CURRENT_TIMESTAMP);
    ```
-3. Update `workers/dfg-api/package.json` `db:migrate` to:
+4. Update `workers/dfg-api/package.json` `db:migrate` to:
    ```json
    "db:migrate": "wrangler d1 migrations apply dfg-scout-db --remote"
    ```
-4. Run `wrangler d1 migrations list dfg-scout-db --remote` and confirm 0 pending migrations.
+5. Run `wrangler d1 migrations list dfg-scout-db --remote` and confirm 0 pending migrations.
 
-After that step, future migrations can be added as `0009_*.sql` etc. and applied via `npm run db:migrate`.
+After that step, future migrations can be added as `0010_*.sql` etc. and applied via `npm run db:migrate`.
 
 ## Recreating the dev preview D1
 
