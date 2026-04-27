@@ -20,7 +20,7 @@ ENVIRONMENT = "development"
 [[d1_databases]]
 binding = "DB"
 database_name = "dfg-scout-db-preview"
-database_id = "e6af9d25-b031-4958-a3b2-455bafdff5f1"
+database_id = "1f1376c2-1ca0-4284-b122-1f6c2ecd58be"
 
 # =============================================================================
 # PRODUCTION
