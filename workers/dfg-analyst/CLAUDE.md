@@ -100,6 +100,20 @@ For shared calculations, use `@dfg/money-math` package:
 import { calculateProfit, calculateMargin } from '@dfg/money-math'
 ```
 
+### Comp semantics (closes #310)
+
+`PHOENIX_TRAILER_COMPS` in `phoenix-market-data.ts` stores **net proceeds**, not
+gross sale prices. The DFG operator sells trailers via local-pickup cash
+transactions on Facebook Marketplace, Craigslist, and OfferUp. Listing fees and
+payment processing are $0 for that channel mix in the trailer category, so
+Net Proceeds = Sale Price. `calculateProfitScenarios` consumes the comps
+directly without applying `calculateNetProceeds`.
+
+If a channel with non-trivial selling fees is introduced (shipped Marketplace,
+eBay Motors, dealer auctions), update `calculateProfitScenarios` to subtract
+listing fees per channel via `calculateNetProceeds` from `@dfg/money-math` and
+revisit the comp data.
+
 ## Worker-Specific Notes
 
 ### dfg-api

@@ -293,6 +293,23 @@ export function calculateAcquisitionForBid(
 // PROFIT SCENARIOS
 // ============================================
 
+/**
+ * Compute profit scenarios at three resale price points.
+ *
+ * Contract (closes #310): The `phoenixResaleRange` values are NET proceeds for
+ * the modeled selling channel mix (FB Marketplace / Craigslist / OfferUp local
+ * pickup, cash on hand). Listing fees and payment processing are $0 for that
+ * mix in the trailer category, so Net Proceeds = Sale Price. See
+ * `phoenix-market-data.ts` for the full derivation.
+ *
+ * The field name `gross_profit` reflects the variable's wire format and is kept
+ * for backward compatibility, but the value equals Profit per canonical money
+ * math (Net Proceeds - Acquisition Cost) for this channel mix. Margin uses
+ * acquisition cost as denominator per fix #159.
+ *
+ * If a channel with non-trivial selling fees is introduced, switch to
+ * `calculateNetProceeds` from `@dfg/money-math` before computing profit.
+ */
 export function calculateProfitScenarios(
   phoenixResaleRange: PriceRange,
   totalInvestment: number,
