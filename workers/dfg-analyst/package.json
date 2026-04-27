@@ -10,8 +10,7 @@
     "test:full": "npx tsx test-carson.ts"
   },
   "dependencies": {
-    "@dfg/money-math": "file:../../packages/dfg-money-math",
-    "dfg-data-gateway": "file:../../packages/dfg-data-gateway"
+    "@dfg/money-math": "file:../../packages/dfg-money-math"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251209.0",

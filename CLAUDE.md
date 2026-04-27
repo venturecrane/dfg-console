@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-DFG (Durgan Field Guide) is an operator tool for identifying undervalued physical assets at auction and producing conservative flip guidance. The frontend is a Next.js 14 app; the backend consists of Cloudflare Workers.
+DFG (Durgan Field Guide) is an operator tool for identifying undervalued physical assets at auction and producing conservative flip guidance. The frontend is a Next.js 16 app; the backend consists of Cloudflare Workers.
 
 ## Repository Structure
 
 ```
 dfg/
-├── apps/dfg-app/          # Next.js 14 operator console (React, TypeScript, Tailwind)
+├── apps/dfg-app/          # Next.js 16 operator console (React, TypeScript, Tailwind)
 ├── workers/
 │   ├── dfg-api/           # Cloudflare Worker - REST API for opportunities
 │   ├── dfg-scout/         # Cloudflare Worker - auction scraping/pipeline
@@ -65,7 +65,7 @@ npm run typecheck        # TypeScript check
 
 **Tech Stack:**
 
-- Frontend: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, NextAuth.js
+- Frontend: Next.js 16 (App Router), React 18, TypeScript, Tailwind CSS, NextAuth.js
 - Backend: Cloudflare Workers with Hono router
 - Database: Cloudflare D1 (SQLite)
 - Storage: Cloudflare R2 (photos, snapshots)
