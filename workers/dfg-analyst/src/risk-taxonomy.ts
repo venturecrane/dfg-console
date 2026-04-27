@@ -19,6 +19,58 @@
  * - INFO_GAP: Unknown that blocks confidence
  */
 
+import type { ProfitScenario } from './types'
+
+/**
+ * Shape this module reads off the parsed condition assessment.
+ *
+ * Strict subset of {@link ConditionAssessment} plus a few listing-derived
+ * fields (`title`, `description`, etc.) that the upstream caller may merge in.
+ * Polymorphic fields (`exterior`, `interior`, `mechanical`) are typed as
+ * `unknown` because production data has been observed as either a string
+ * label or a structured object — the function defends against both shapes
+ * via runtime checks.
+ */
+export interface RiskTaxonomyCondition {
+  // Listing-level context (set by upstream caller, not the LLM JSON output)
+  title?: string
+  description?: string
+
+  // Title and identity
+  title_status?: string
+  mileage?: number | null
+
+  // Polymorphic — see note above
+  exterior?: unknown
+  interior?: unknown
+  mechanical?: unknown
+
+  // Coverage signal
+  photos_analyzed?: number
+
+  // Trailer / structural fields
+  axle_status?: string
+  brakes?: string
+  frame_rust_severity?: string
+  structural_damage?: boolean
+  structural_damage_source?: string
+  rust_visible_in_photos?: boolean
+  tires_need_replacement?: boolean
+
+  // Description-level disclosure flags (currently unpopulated upstream — see #issue follow-up)
+  damage_mentioned_in_description?: boolean
+  damage_description?: string
+}
+
+/**
+ * Subset of `InvestorLensOutput['scenarios']` that this module actually reads.
+ */
+export interface RiskScenarios {
+  quick_sale?: ProfitScenario
+  expected?: ProfitScenario
+  premium?: ProfitScenario
+}
+
 // CRITICAL: Observed = we SAW it. Unverified = pattern match, NOT confirmed.
 export type EvidenceStatus = 'observed' | 'unverified' | 'info_gap'
 export type RiskSeverity = 'deal_breaker' | 'major_concern' | 'minor_issue' | 'info_gap'
@@ -197,9 +249,9 @@ function computeTwoAxisVerdict(
  * CRITICAL: Separate OBSERVED from UNVERIFIED from INFO_GAP
  */
 export function evaluateRisks(
-  condition: any,
+  condition: RiskTaxonomyCondition,
   assetType: 'vehicle' | 'trailer' | 'power_tool',
-  scenarios?: any,
+  scenarios?: RiskScenarios,
   economicsOk: boolean = true,
   hasAuctionEndTime: boolean = false
 ): RiskAssessment {
@@ -592,7 +644,7 @@ export function buildPreBidChecklist(
  * Get condition confidence label based on evidence coverage
  * CRITICAL: Don't show 4.0/5 when everything is unknown
  */
-export function getConditionConfidenceLabel(condition: any): {
+export function getConditionConfidenceLabel(condition: RiskTaxonomyCondition): {
   label: string
   level: 'high' | 'medium' | 'low' | 'insufficient'
   reason: string
