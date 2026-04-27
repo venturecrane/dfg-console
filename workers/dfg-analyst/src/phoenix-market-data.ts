@@ -5,6 +5,31 @@ import type { TrailerComps, FlipCosts, PriceRange } from './types'
 // ============================================
 // PHOENIX TRAILER MARKET COMPS
 // ============================================
+//
+// CONTRACT (closes #310): These comp values are NET PROCEEDS, not gross sale prices.
+//
+// Rationale: DFG operators sell trailers via local-pickup cash transactions on
+// Facebook Marketplace (primary), Craigslist, and OfferUp (channel sequence in
+// worker.ts:1428). For these channels, in the trailer category, the platform
+// fees that distinguish gross from net are effectively zero:
+//
+//   - Facebook Marketplace local pickup: $0 fees (vehicles/trailers, no
+//     shipping, cash to seller). The 10% selling fee applies only to
+//     Marketplace-shipped goods, which DFG does not use for trailers.
+//   - OfferUp local pickup: $0 fees.
+//   - Craigslist: $5 flat per 30-day vehicle/trailer post; <0.5% on a $1.5k+
+//     trailer and not always used. Treated as immaterial.
+//   - Payment processing: $0. All transactions are cash on pickup.
+//
+// Therefore: Net Proceeds = Sale Price - 0 - 0 = Sale Price for the modeled
+// selling channel mix. The numbers below can be used directly in
+// `calculateProfitScenarios` as the numerator (sale_price) without applying
+// `calculateNetProceeds`.
+//
+// If a future channel with non-trivial selling fees is introduced (e.g.,
+// shipped Marketplace sales, eBay Motors, dealer auctions), this contract MUST
+// be revisited and `calculateProfitScenarios` updated to subtract listing fees
+// per channel via `calculateNetProceeds` from `@dfg/money-math`.
 
 export const PHOENIX_TRAILER_COMPS: TrailerComps = {
   enclosed: {
