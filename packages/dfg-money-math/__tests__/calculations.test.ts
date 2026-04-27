@@ -96,6 +96,35 @@ describe('Net Proceeds', () => {
     })
     expect(proceeds).toBe(3000)
   })
+
+  // #310: Documents the DFG analyst contract for trailer comps in
+  // phoenix-market-data.ts. Comps are net for the modeled channel mix
+  // (FB Marketplace / Craigslist / OfferUp local pickup, cash) because
+  // those channels charge $0 listing fees and $0 payment processing on
+  // local-pickup vehicle/trailer sales.
+  it('FB Marketplace local pickup: net proceeds equal sale price', () => {
+    const proceeds = calculateNetProceeds({
+      salePrice: 2800,
+      listingFees: 0,
+      paymentProcessing: 0,
+    })
+    expect(proceeds).toBe(2800)
+  })
+
+  // #310: When a channel with non-trivial fees is introduced (shipped
+  // Marketplace at 10%), profit must subtract those fees before comparing
+  // to acquisition cost. This test pins the gross→net delta so the
+  // analyst contract can be revisited if the channel mix changes.
+  it('Marketplace shipped (10% selling fee): gross→net reduces proceeds', () => {
+    const grossSale = 2800
+    const proceeds = calculateNetProceeds({
+      salePrice: grossSale,
+      listingFees: grossSale * 0.1,
+      paymentProcessing: 0,
+    })
+    expect(proceeds).toBe(2520)
+    expect(grossSale - proceeds).toBe(280)
+  })
 })
 
 describe('Profit and Margin', () => {
