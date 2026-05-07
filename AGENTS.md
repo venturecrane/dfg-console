@@ -2,6 +2,21 @@
 
 DFG is an operator tool and subscription SaaS for identifying undervalued physical assets and producing conservative, explainable flip guidance. It is not a marketplace and must not inflate confidence.
 
+## Coding Standards
+
+All code edits MUST follow the Venture Crane portfolio coding standard, fetched via `crane_doc('global', 'coding-standards.md')`. Key directives that apply on every change:
+
+- Parse external inputs with Zod; never `as` cast at trust boundaries.
+- No floating Promises; explicitly `await` or attach a `.catch`.
+- No module-level state in Cloudflare Workers (per-isolate state leaks across requests).
+- File/function ceilings: 500 lines/file, 75 lines/function, complexity 15, depth 4, params 5.
+- No default exports outside framework-required positions (Astro pages, Next.js App Router files, Workers entry).
+- Fetch the global doc for the full 12 directives with good/bad examples and per-stack notes.
+
+Mechanical enforcement status: dfg-console's `eslint.config.js` does NOT yet enforce the portfolio rule set; lint catches only the basic recommended rules. Self-discipline is required until the per-venture eslint adoption initiative reaches dfg-console (audit doc: `docs/research/venture-eslint-adoption-audit-2026-05-06.md` in venturecrane/crane-console). The portfolio rules are nonetheless mandatory; treat the global doc as the source of truth.
+
+These portfolio standards are PRIMARY. The DFG-specific review guidelines below (money math, staleness gating, Cloudflare hygiene, mobile patterns) are ADDITIONAL — they apply on top of the portfolio standard, not instead of it.
+
 ## Repository structure
 
 ```
