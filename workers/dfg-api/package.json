@@ -18,7 +18,7 @@
     "@cloudflare/workers-types": "^4.20241218.0",
     "@venturecrane/crane-test-harness": "^0.1.0",
     "typescript": "^5.7.2",
-    "vitest": "^4.0.18",
+    "vitest": "^4.1.8",
     "wrangler": "^4.69.0"
   },
   "dependencies": {
