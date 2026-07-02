@@ -1,0 +1,25 @@
+name = "dfg-orchestrator"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "production"
+PHASE = "phase0"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dfg-orchestrator-db"
+database_id = "TBD"  # Create via: wrangler d1 create dfg-orchestrator-db
+
+# Secrets (set via wrangler secret put):
+# - ANTHROPIC_API_KEY
+# - DFG_RELAY_TOKEN (same as dfg-relay: 056b6f9859f5f315c704e9cebfd1bc88f3e1c0a74b904460a2de96ec9bceac2f)
+# - ORCHESTRATOR_SECRET (generate new: openssl rand -hex 32)
+
+[build]
+command = "npm run build"
+
+# Phase 2+ will add:
+# [triggers]
+# crons = ["*/5 * * * *"]  # Every 5 minutes
